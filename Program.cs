@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using NLog.Web;
 
 namespace MovieLibrary
 {
@@ -6,7 +8,11 @@ namespace MovieLibrary
     {
         static void Main(string[] args)
         {
-            //var file = "movies.csv";
+            string path = Directory.GetCurrentDirectory() + "//nlog.config";
+            
+            var logger = NLog.Web.NLogBuilder.ConfigureNLog(path).GetCurrentClassLogger();
+            
+            var file = "movies.csv";
 
             Console.WriteLine("Enter 1 to see movies");
             Console.WriteLine("Enter 2 to add movie");
@@ -16,7 +22,24 @@ namespace MovieLibrary
 
             if (option == "1")
             {
+                if (File.Exists(file))
+                {
+                    StreamReader sr = new StreamReader(file);
+                    while (!sr.EndOfStream)
+                    {
+                        string row = sr.ReadLine();
 
+                        string[] movie = row.Split(",");
+
+                        string movieID = movie[0];
+
+                        Console.WriteLine($"MovieID: {movieID}");
+                    }
+                }
+                else
+                {
+                    logger.Warn("File does not exist. {file}", file);
+                }
             }
             else if (option == "2")
             {
