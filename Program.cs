@@ -30,10 +30,13 @@ namespace MovieLibrary
                         string row = sr.ReadLine();
 
                         string[] movie = row.Split(",");
-
+                        
                         string movieID = movie[0];
 
-                        Console.WriteLine($"MovieID: {movieID}");
+
+                        string genre = movie[2].Replace("|", ",");
+
+                        Console.WriteLine($"MovieID: {movieID}, Genre: {genre}");
                     }
                 }
                 else
